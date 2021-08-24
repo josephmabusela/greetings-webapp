@@ -1,0 +1,41 @@
+.container {
+    width: 50%;
+    margin: auto;
+    background-color: yellow;
+    padding: 1em;
+}
+
+.counter {
+    font-size: 6rem;
+    align-items: center;
+    display: flex;
+    float: right;
+}
+
+.errorText {
+    width: 50%;
+    margin: auto;
+    padding: 1em;
+}
+
+h1, h2, h3 {
+    width: 50%;
+    margin: auto;
+    padding: 1rem;
+}
+.name-input {
+    width: 50%;
+    margin: auto;
+    padding: 1em; 
+}
+
+.name-display {
+    width: 50%;
+    margin: auto;
+    padding: 1em;
+}
+
+.buttons {
+    width: 50%;
+    margin: auto;
+}
