@@ -1,5 +1,6 @@
 const express = require('express');
 const exphbs  = require('express-handlebars');
+const greeting = require('./greeting');
 const Greetings = require('./greeting')
 
 const app = express();
@@ -13,7 +14,12 @@ app.use(express.json())
 app.use(express.urlencoded({ extended: false }))
 
 app.get('/', function(req, res) {
-  res.render('index');
+  res.render('index', {
+
+    greeted: greetings.getStoreName(),
+    counter: greetings.getGreetedNames(),
+
+  });
 })
 
 app.post('/greeted', function(req, res) {

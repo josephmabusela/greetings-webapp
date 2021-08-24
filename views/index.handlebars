@@ -3,10 +3,7 @@
             <h1>Greetings!</h1>
         </div>
         <div class="errorText">
-            <p></p>
-        </div>
-        <div class="counter">
-            0
+            <p><span>{{errors}}</span></p>
         </div>
         <div class="name-input">
             <input type="text" name="" class="nameText" value="" placeholder="Enter a name">
@@ -28,9 +25,12 @@
                     <span class="label-body">Sepedi</span>
                 </label>
                 <button class="greetButton" type="submit">Greet Me!</button>
-                <button class="reset" type="submit">Reset</button>
            </form>
         </div>
-        <div class="name-display">
-            <textarea name="message" rows="2" cols="20" class="message" class="message"></textarea>
+        <div class="counter">
+            <span id="counter">{{counter}}</span>names greeted
         </div>
+        <div class="name-display">
+            <h3><span>{{greeted}}</span></h3>
+        </div>
+

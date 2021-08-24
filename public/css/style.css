@@ -1,12 +1,12 @@
 .container {
     width: 50%;
     margin: auto;
-    background-color: yellow;
+    background-color: #eee;
     padding: 1em;
 }
 
 .counter {
-    font-size: 6rem;
+    font-size: 2rem;
     align-items: center;
     display: flex;
     float: right;
