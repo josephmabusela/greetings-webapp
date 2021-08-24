@@ -1,6 +1,5 @@
 const express = require('express');
 const exphbs  = require('express-handlebars');
-const greeting = require('./greeting');
 const Greetings = require('./greeting')
 
 const app = express();

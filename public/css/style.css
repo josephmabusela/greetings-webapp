@@ -1,3 +1,7 @@
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif
+}
+
 .container {
     width: 50%;
     margin: auto;
@@ -6,7 +10,7 @@
 }
 
 .counter {
-    font-size: 2rem;
+    font-size: 4rem;
     align-items: center;
     display: flex;
     float: right;
@@ -21,7 +25,7 @@
 h1, h2, h3 {
     width: 50%;
     margin: auto;
-    padding: 1rem;
+    padding: 1em;
 }
 .name-input {
     width: 50%;
@@ -32,10 +36,34 @@ h1, h2, h3 {
 .name-display {
     width: 50%;
     margin: auto;
-    padding: 1em;
+    padding: 2em;
 }
 
-.buttons {
+form {
     width: 50%;
     margin: auto;
+}
+
+@media(max-width: 1000px) {
+    .container {
+        flex-direction: column;
+        justify-content: space-between;
+        padding: 1em;
+        width: fit-content;
+    }
+    form {
+        display: flex;
+        justify-content: space-between; 
+    }
+    .name-display{
+        display: flex;
+        justify-content: space-between;
+    }
+    .name-input {
+        justify-content: space-between;
+    }
+    .greeting {
+        float: left;
+        justify-content:first baseline;
+    }
 }
