@@ -1,34 +1,26 @@
 module.exports =  function Greetings() {
-    var namesList = [];
-    var user;
-    var lang;
-    var greet;
+    let namesList = [];
+    let person;
+    let greetText;
+    let greet;
 
-    function setGreetLanguage(language) {
-        lang = language
-    }
-
-    function getGreetLanguage() {
-        return lang
-    }
-
-    function setGreetings() {
-        if (getGreetLanguage() === "french") {
-            greet =  "Bonjour "
+    function setGreetings(name, language) {
+        if (language == "english") {
+            greetText = "Hello " + name
         }
-
-        if (getGreetLanguage() === "english") {
-            greet =  "Hello "
+        else if (language == "french") {
+            greetText = "Bonjour " + name
         }
-
-        if (getGreetLanguage() === "sepedi") {
-            greet =  "Dumela ";
+        else if (language == "sepedi") {
+            greetText = "Dumela " + name
+        }
+        else {
+            greetText = ""
         }
     }
 
     function getGreetings() {
-
-        return greet
+        return greetText;
     }
 
     function storeName(str) {
@@ -57,13 +49,11 @@ module.exports =  function Greetings() {
 
     return {
         storeName,
-        setGreetLanguage,
+        setGreetings,
         getStoreName,
-        getGreetLanguage,
+        getGreetings,
         getGreetedNames,
         setGreetedNames,
         exisitingNames,
-        setGreetings,
-        getGreetings
     }
 }

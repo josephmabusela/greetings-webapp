@@ -1,5 +1,6 @@
 body {
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    text-align: center;
 }
 
 .container {
@@ -7,6 +8,15 @@ body {
     margin: auto;
     background-color: #eee;
     padding: 1em;
+}
+
+
+.languageRadio {
+    display: inline;
+}
+
+label {
+ display: inline;   
 }
 
 .counter {
@@ -33,13 +43,12 @@ h1, h2, h3 {
     padding: 1em; 
 }
 
-.name-display {
-    width: 50%;
-    margin: auto;
-    padding: 2em;
+.name-display{
+    display: flex;
+    justify-content: space-between;
 }
 
-form {
+.greetButton {
     width: 50%;
     margin: auto;
 }
@@ -51,10 +60,12 @@ form {
         padding: 1em;
         width: fit-content;
     }
-    form {
-        display: flex;
+
+    .languageRadio {
+        display: inline;
         justify-content: space-between; 
     }
+
     .name-display{
         display: flex;
         justify-content: space-between;

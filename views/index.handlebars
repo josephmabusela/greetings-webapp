@@ -1,36 +1,36 @@
-
-        <div class="greeting">
-            <h1>Greetings!</h1>
-        </div>
-        <div class="errorText">
-            <p><span>{{errors}}</span></p>
-        </div>
-        <div class="name-input">
-            <input type="text" name="" class="nameText" value="" placeholder="Enter a name">
-        </div>
-        <h3>Select Greeting Language</h3>
-        <div class="buttons">
-           <form action="/greeted" method="POST">
-
-                <label class="">
-                <input type="radio" name="radioButton" class="radioButton" value="english">
-                    <span class="label-body">English</span>
-                </label>
-                <label class="">
-                <input type="radio" name="radioButton" class="radioButton" value="french">
-                    <span class="label-body">French</span>
-                </label>
-                <label class="">
-                <input type="radio" name="radioButton" class="radioButton" value="sepedi">
-                    <span class="label-body">Sepedi</span>
-                </label>
-                <button class="greetButton" type="submit">Greet!</button>
-           </form>
-        </div>
-        <div class="counter">
-            <span id="counter">{{counter}}</span>names greeted
-        </div>
-        <div class="name-display">
-            <h3><span>{{greeted}}</span></h3>
-        </div>
+<div class="greeting">
+        <h1>Greetings!</h1>
+    </div>
+    <div class="errorText">
+        <p><span>{{errors}}</span></p>
+    </div>
+    <div class="buttons">
+        <form action="/greet" method="POST">
+            <div class="name-input">
+                <input type="text" name="name" class="name" placeholder="Enter a name">
+            </div>
+            <h3>Select Greeting Language</h3>
+           <label class="">
+                <input type="radio" name="langauge" value="english" class="languageRadio">
+                <span class="label-body">English</span>
+            </label>
+            <label class="">
+                <input type="radio" name="langauge" value="french" class="languageRadio">
+                <span class="label-body">French</span>
+            </label>
+            <label class="">
+                <input type="radio" name="langauge" value="sepedi" class="languageRadio">
+                <span class="label-body">Sepedi</span>
+            </label>
+            <div class="">
+                <button type="submit">Greet!</button>
+                <button type="submit">Reset!</button>
+            </div>
+        </form>
+    </div>
+    <div class="name-display">
+           <span>
+            {{greetings.getGreetings}}
+           </span>
+    </div>
 

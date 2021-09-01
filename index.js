@@ -1,31 +1,45 @@
 const express = require('express');
 const exphbs  = require('express-handlebars');
-const Greetings = require('./greeting')
+const bodyParser = require('body-parser');
+const Greetings = require('./greeting');
+//const session = require('express-session');
+//const flash = require('express-flash');
+
 
 const app = express();
 const greetings = Greetings();
 
-app.engine('handlebars', exphbs());
+//app.engine('handlebars', exphbs());
 app.engine('handlebars', exphbs({defaultLayout: 'main'}));
 app.set('view engine', 'handlebars');
+
 app.use(express.static('public'));
-app.use(express.json())
-app.use(express.urlencoded({ extended: false }))
+
+app.use(express.json());
+//app.use(flash());
+app.use(express.urlencoded({ extended: false }));
+
+// parse application in ->/x-www-form-urlencoded
+app.use(bodyParser.urlencoded({ extended: false}));
+
+// parse application in -> / json
+app.use(bodyParser.json());
 
 app.get('/', function(req, res) {
   res.render('index', {
-
-    greeted: greetings.getStoreName(),
-    counter: greetings.getGreetedNames(),
-
+    greet: greetings.getGreetings() 
   });
 })
 
-app.post('/greeted', function(req, res) {
+app.post('/greet', function(req, res) {
+  
+  greetings.setGreetings(req.body.name, req.body.language);
 
+  console.log(greetings.getGreetings());
+  res.redirect('/');
 })
 
-app.post('/counter/<USER_NAME>', function(req, res) {
+app.post('/counter/', function(req, res) {
 
 })
 
