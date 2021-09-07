@@ -9,15 +9,14 @@ const Greetings = require('./greeting');
 const app = express();
 const greetings = Greetings();
 
-//app.engine('handlebars', exphbs());
+let greetMessage = ""
+
+app.engine('handlebars', exphbs());
 app.engine('handlebars', exphbs({defaultLayout: 'main'}));
 app.set('view engine', 'handlebars');
 
 app.use(express.static('public'));
 
-app.use(express.json());
-//app.use(flash());
-app.use(express.urlencoded({ extended: false }));
 
 // parse application in ->/x-www-form-urlencoded
 app.use(bodyParser.urlencoded({ extended: false}));
@@ -26,21 +25,44 @@ app.use(bodyParser.urlencoded({ extended: false}));
 app.use(bodyParser.json());
 
 app.get('/', function(req, res) {
-  res.render('index', {
-    greet: greetings.getGreetings() 
+  let counter = greetings.counter()
+    res.render('index', {
+    greetMessage: greetings.getGreetings(),
+    counter,
   });
 })
 
 app.post('/greet', function(req, res) {
-  
-  greetings.setGreetings(req.body.name, req.body.language);
 
-  console.log(greetings.getGreetings());
+  greetings.setGreetMessage(req.body.name, req.body.language)
+  // greetings.setPerson(req.body.name)
+  // greetings.setGreetLanguage(req.body.language)
+  greetings.recordGreetedNames(req.body.name)
   res.redirect('/');
 })
 
-app.post('/counter/', function(req, res) {
+app.get('/greeted', function(req, res) {
+  let names = greetings.getGreetedNames()
+  res.render('greeted', {
+    names
+  })
+})
 
+//to get the name you will get it from from your dynamic route 
+app.get("/greeted/:name", function(req, res) {
+
+  //getting the name from params
+  let personsName = req.params.name
+  //get all names and the counter for each person. 
+  let namesList = greetings.getGreetedNames()
+  //access using the keys to get the value. 
+  let personsCounter = namesList[personsName] 
+
+  //then  you can  render personsCounter and the personsName.
+  res.render('counter', {
+    personsCounter,
+    personsName
+  })
 })
 
 const PORT = process.env.PORT || 3011;

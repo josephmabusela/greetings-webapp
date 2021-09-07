@@ -1,59 +1,57 @@
 module.exports =  function Greetings() {
-    let namesList = [];
-    let person;
-    let greetText;
-    let greet;
+    
+    let greetMessage = "";
+    let namesList = {};
+    let name = "";
+    let counter = 0;
 
-    function setGreetings(name, language) {
-        if (language == "english") {
-            greetText = "Hello " + name
+    function setGreetMessage(name, language) {
+        if (language === "french") {
+            greetMessage =  "Bonjour " + name
         }
-        else if (language == "french") {
-            greetText = "Bonjour " + name
+
+        if (language === "english") {
+            greetMessage = "Hello " + name
         }
-        else if (language == "sepedi") {
-            greetText = "Dumela " + name
-        }
-        else {
-            greetText = ""
+
+        if (language === "sepedi") {
+            greetMessage = "Dumela " + name;
         }
     }
 
     function getGreetings() {
-        return greetText;
+        return greetMessage
     }
 
-    function storeName(str) {
-       user = str.substring(0, 1).toUpperCase() + str.substring(1).toLowerCase();
+    function recordGreetedNames(name) {
+        // check if name exists
+        if (namesList[name] === undefined) {
+            namesList[name] = 1;
+        } else{
+            namesList[name] ++
+        }
     }
 
-    function getStoreName() {
-        return user;
-    }
-
-    function setGreetedNames(userInput) {
-        namesList = userInput
+    function counter() {
+        let count = Number(namesList) || 0;
+        return count ++
     }
 
     function getGreetedNames() {
         return namesList
     }
 
-    function exisitingNames() {
-        if (!namesList.includes(user)) {
-            namesList.push(user);
-        }
-        return namesList
+
+    function greetedCount() {
+        return Object.keys(namesList).length
     }
-
-
+    
     return {
-        storeName,
-        setGreetings,
-        getStoreName,
+        setGreetMessage,
         getGreetings,
+        recordGreetedNames,
+        greetedCount,
         getGreetedNames,
-        setGreetedNames,
-        exisitingNames,
+        counter
     }
 }

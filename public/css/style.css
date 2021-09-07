@@ -10,9 +10,26 @@ body {
     padding: 1em;
 }
 
+ul {
+    display: flex;
+    flex-direction: column;
+    text-decoration: none;
+}
 
-.languageRadio {
-    display: inline;
+li {
+    height: 3rem;
+    list-style: none;
+    text-decoration: none;
+}
+
+ul li a {
+    text-decoration: none;
+    font-size: 2rem;
+    color: #eee;
+}
+
+.buttons {
+    margin: 1em;
 }
 
 label {
@@ -22,8 +39,6 @@ label {
 .counter {
     font-size: 4rem;
     align-items: center;
-    display: flex;
-    float: right;
 }
 
 .errorText {
@@ -32,11 +47,22 @@ label {
     padding: 1em;
 }
 
-h1, h2, h3 {
-    width: 50%;
-    margin: auto;
-    padding: 1em;
+ul li a:hover {
+    background: #eee;
+    color: #000;
 }
+
+ul a {
+    font-size: 65px;
+    text-decoration: none;
+    color: black
+}
+
+h2 a {
+    text-decoration: none;
+    color: black
+}
+
 .name-input {
     width: 50%;
     margin: auto;
@@ -44,7 +70,8 @@ h1, h2, h3 {
 }
 
 .name-display{
-    display: flex;
+    display: inline;
+    align-content: center;
     justify-content: space-between;
 }
 

@@ -4,33 +4,33 @@
     <div class="errorText">
         <p><span>{{errors}}</span></p>
     </div>
-    <div class="buttons">
+    <div class="">
+        <h2><a href="/greeted">Names greeted:</a>{{counter}}</h2>
+    </div>
+    <div class="">
         <form action="/greet" method="POST">
             <div class="name-input">
-                <input type="text" name="name" class="name" placeholder="Enter a name">
+                <input type="text" name="name" class="name" placeholder="Enter a name" value="">
             </div>
             <h3>Select Greeting Language</h3>
            <label class="">
-                <input type="radio" name="langauge" value="english" class="languageRadio">
+                <input type="radio" name="language" value="english" class="language">
                 <span class="label-body">English</span>
             </label>
             <label class="">
-                <input type="radio" name="langauge" value="french" class="languageRadio">
+                <input type="radio" name="language" value="french" class="language">
                 <span class="label-body">French</span>
             </label>
             <label class="">
-                <input type="radio" name="langauge" value="sepedi" class="languageRadio">
+                <input type="radio" name="language" value="sepedi" class="language">
                 <span class="label-body">Sepedi</span>
             </label>
-            <div class="">
+            <div class="buttons">
                 <button type="submit">Greet!</button>
-                <button type="submit">Reset!</button>
+                <button type="delete">Reset!</button>
+            </div>
+            <div class="name-display">
+                <h1>{{greetMessage}}</h1>
             </div>
         </form>
     </div>
-    <div class="name-display">
-           <span>
-            {{greetings.getGreetings}}
-           </span>
-    </div>
-
