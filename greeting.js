@@ -1,7 +1,7 @@
 module.exports =  function Greetings() {
     
     let greetMessage = "";
-    let errors = ""
+    //let errors = ""
     let namesList = {};
 
     function setGreetMessage(name, language) {
@@ -53,6 +53,6 @@ module.exports =  function Greetings() {
         greetedCount,
         getGreetedNames,
         counter,
-        errorText
+        //errorText
     }
 }
