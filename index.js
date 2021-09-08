@@ -25,10 +25,10 @@ app.use(bodyParser.urlencoded({ extended: false}));
 app.use(bodyParser.json());
 
 app.get('/', function(req, res) {
-  let counter = greetings.counter()
+  let count = greetings.counter()
     res.render('index', {
     greetMessage: greetings.getGreetings(),
-    counter,
+    count,
   });
 })
 
