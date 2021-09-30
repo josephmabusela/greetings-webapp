@@ -3,6 +3,7 @@ module.exports =  function Greetings() {
     let greetMessage = "";
     //let errors = ""
     let namesList = {};
+    let count = 0;
 
     function setGreetMessage(name, language) {
         if (language === "french") {
@@ -32,11 +33,6 @@ module.exports =  function Greetings() {
         }
     }
 
-    function counter() {
-        let count = Number(namesList) || 0;
-        return count ++
-    }
-
     function getGreetedNames() {
         return namesList
     }
@@ -45,6 +41,21 @@ module.exports =  function Greetings() {
     function greetedCount() {
         return Object.keys(namesList).length
     }
+
+    function errorMessages(){
+        if (setGreetMessage(language) == "") {
+            
+        }
+        const reachedWarningLevel = total >= warningLevel 
+            && total < criticalLevel;
+
+        return reachedWarningLevel;
+    }
+
+    function hasReachedCriticalLevel(){
+        const total = grandTotal();
+        return total >= criticalLevel;
+    }
     
     return {
         setGreetMessage,
@@ -52,7 +63,6 @@ module.exports =  function Greetings() {
         recordGreetedNames,
         greetedCount,
         getGreetedNames,
-        counter,
         //errorText
     }
 }

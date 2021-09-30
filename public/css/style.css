@@ -29,16 +29,18 @@ ul li a {
 }
 
 .buttons {
-    margin: 1em;
+    width: 50%;
+    margin: auto;
 }
 
 label {
  display: inline;   
 }
 
-.counter {
-    font-size: 4rem;
-    align-items: center;
+.names-greeted {
+    width: 50%;
+    margin: auto;
+    padding: 1em;
 }
 
 .errorText {
@@ -70,9 +72,9 @@ h2 a {
 }
 
 .name-display{
-    display: inline;
-    align-content: center;
-    justify-content: space-between;
+    width: 50%;
+    margin: auto;
+    padding: 2em;
 }
 
 .greetButton {

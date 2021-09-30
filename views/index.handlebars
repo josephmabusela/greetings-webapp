@@ -1,14 +1,26 @@
 <div class="greeting">
         <h1>Greetings!</h1>
     </div>
-    <div class="errorText">
-        <p><span>{{errors}}</span></p>
+    {{#if error.errorText}}
+    <div class="error">
+        <h1> {{error.errorText}}</h1>
     </div>
-    <div class="">
-        <h2><a href="/greeted">Names greeted:</a>{{counter}}</h2>
+    {{/if}}
+    {{!-- <div class="names-greeted">
+        <h2><a href="/greeted">Names greeted</a></h2>
     </div>
+    <div>
+        <form action="/count" method="POST">
+            <div class="counter">
+                {{counter}}
+            </div>
+        </form>
+    </div> --}}
     <div class="">
         <form action="/greet" method="POST">
+            <div class="names-greeted">
+                <h2><a href="/greeted">Names greeted: {{counter}}</a></h2>
+            </div>
             <div class="name-input">
                 <input type="text" name="name" class="name" placeholder="Enter a name" value="">
             </div>
@@ -27,10 +39,12 @@
             </label>
             <div class="buttons">
                 <button type="submit">Greet!</button>
-                <button type="delete">Reset!</button>
             </div>
             <div class="name-display">
                 <h1>{{greetMessage}}</h1>
             </div>
+        </form>
+        <form action="/reset" method="POST">
+            <input type="submit" value="Reset counter"></input>
         </form>
     </div>
