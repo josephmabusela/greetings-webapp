@@ -60,27 +60,10 @@ app.get('/', function(req, res) {
 
 
 
-app.post('/greet', async function(req, res) {
-
-  if (((req.body.name === "" && req.body.language !== undefined )) ||
-  ((req.body.name !== "" && req.body.language === undefined)) ||
-  ((req.body.name === "" && req.body.language === undefined))) {
-    req.flash('info', 'Please enter a name and choose a greeting language');
-    res.redirect('/');
-
-  } else {
-    greetings.setGreetMessage(req.body.name, req.body.language);
-    greetings.recordGreetedNames(req.body.name);
-
-    req.flash('info2', 'Name greeted');
-    res.render('index', {
-      userData: {
-        greet: await greetings.getGreetings()
-      },
-      counter: await greetings.greetedCount()
-    })
-  }
-
+app.post('/greet', function(req, res) {
+  
+  greetings.setGreetMessage(req.body.name, req.body.language);
+  greetings.recordGreetedNames(req.body.name);
 
   if (!req.session.counter) {
     req.session.counter = 0;
