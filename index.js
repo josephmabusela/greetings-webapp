@@ -82,15 +82,15 @@ app.post('/greet', async function(req, res) {
   }
 
 
-  // if (!req.session.counter) {
-  //   req.session.counter = 0;
-  // }
-  // req.session.counter++;
+  if (!req.session.counter) {
+    req.session.counter = 0;
+  }
+  req.session.counter++;
 
   // if (req.session.reset) {
   //   req.session.counter = 0;
   // }
-  //res.redirect('/');
+  res.redirect('/');
 })
 
 app.post('/reset', function(req, res) {
