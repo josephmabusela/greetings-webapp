@@ -40,37 +40,57 @@ app.use(bodyParser.json());
 
 app.get('/', function(req, res) {
 
+
  //getting the name from params
- let personsName = req.params.name
+ let personsName = req.params.name;
+
  //get all names and the counter for each person. 
- let namesList = greetings.getGreetedNames()
+ let namesList = greetings.getGreetedNames();
+
  //access using the keys to get the value. 
  //let count = namesList[personsName] || 0
 
     res.render('index', {
     greetMessage: greetings.getGreetings(),
     personsName,
-    //errorText,
+    namesList,
     counter : req.session.counter
   });
 })
 
 
 
-app.post('/greet', function(req, res) {
+app.post('/greet', async function(req, res) {
 
-  greetings.setGreetMessage(req.body.name, req.body.language);
-  greetings.recordGreetedNames(req.body.name);
+  if (((req.body.name === "" && req.body.language !== undefined )) ||
+  ((req.body.name !== "" && req.body.language === undefined)) ||
+  ((req.body.name === "" && req.body.language === undefined))) {
+    req.flash('info', 'Please enter a name and choose a greeting language');
+    res.redirect('/');
 
-  if (!req.session.counter) {
-    req.session.counter = 0;
+  } else {
+    greetings.setGreetMessage(req.body.name, req.body.language);
+    greetings.recordGreetedNames(req.body.name);
+
+    req.flash('info2', 'Name greeted');
+    res.render('index', {
+      userData: {
+        greet: await greetings.getGreetings()
+      },
+      counter: await greetings.greetedCount()
+    })
   }
-  req.session.counter++;
+
+
+  // if (!req.session.counter) {
+  //   req.session.counter = 0;
+  // }
+  // req.session.counter++;
 
   // if (req.session.reset) {
   //   req.session.counter = 0;
   // }
-  res.redirect('/');
+  //res.redirect('/');
 })
 
 app.post('/reset', function(req, res) {

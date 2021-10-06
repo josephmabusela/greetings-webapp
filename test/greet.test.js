@@ -1,6 +1,21 @@
 const assert = require('assert');
+const Greetings = require('../greeting/greeting-routes');
+const pg = require('pg');
+const Pool = pg.Pool;
 
-const Greetings = require('../greeting');
+const connectionString = process.env.DATABASE_URL || 'postgresql://localhost:5432/my_greetings';
+
+const pool = new Pool({
+    connectionString
+});
+
+describe("Language greeting", function(){
+
+    this.beforeEach(async function() {
+        console.log("*****");
+        await pool.query("")
+    })
+})
 
 describe("Language greeting", function() {
     it("should return French as a language", function() {
