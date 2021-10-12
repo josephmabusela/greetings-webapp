@@ -43,7 +43,15 @@ label {
     padding: 1em;
 }
 
-.errorText {
+.error {
+    color: crimson;
+    width: 50%;
+    margin: auto;
+    padding: 1em;
+}
+
+.success {
+    color: green;
     width: 50%;
     margin: auto;
     padding: 1em;

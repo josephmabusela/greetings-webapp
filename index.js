@@ -1,113 +1,58 @@
+/* eslint-disable no-unused-vars */
+/* eslint-disable prefer-const */
 const express = require('express');
-const exphbs  = require('express-handlebars');
+const exphbs = require('express-handlebars');
 const bodyParser = require('body-parser');
 const session = require('express-session');
 const flash = require('express-flash');
 const pg = require('pg');
 const Pool = pg.Pool;
+
+let useSSL = false;
+let local = process.env.LOCAL || false;
+if (process.env.DATABASE_URL && !local) {
+    useSSL = true;
+}
+// which db connection to use
+const connectionString = process.env.DATABASE_URL || 'postgresql://localhost:5432/greetings-app';
+
+const pool = new Pool({
+    connectionString,
+    ssl: useSSL
+}); ;
+
 const app = express();
+const Greetings = require('./greeting');
+const GreetingRoutes = require('./routes/greeting-routes');
+const greetings = Greetings();
+const greetingRoutes = GreetingRoutes(greetings);
+
+app.engine('handlebars', exphbs());
+app.engine('handlebars', exphbs({ defaultLayout: 'main' }));
+app.set('view engine', 'handlebars');
+
+// initialising necessary middleware
+app.use(bodyParser.urlencoded({ extended: true }));
+app.use(bodyParser.json());
+app.use(flash());
+app.use(express.static('public'));
 
 // initialise session middleware - flash-express depends on it
 app.use(session({
-  secret : "<add a secret string here>",
-  resave: false,
-  saveUninitialized: true
-}))
+    secret: 'This is my secret sessions string',
+    resave: false,
+    saveUninitialized: true,
+    cookie: { maxAge: 60000 }
+}));
 
-// initialise the flash middleware
-app.use(flash());
-
-const Greetings = require('./greeting');
-const greetings = Greetings();
-
-//let greetMessage = ""
-
-app.engine('handlebars', exphbs());
-app.engine('handlebars', exphbs({defaultLayout: 'main'}));
-app.set('view engine', 'handlebars');
-
-// Use the session middleware
-app.use(session({ secret: 'keyboard cat', cookie: { maxAge: 60000 }}))
-
-app.use(express.static('public'));
-
-
-// parse application in ->/x-www-form-urlencoded
-app.use(bodyParser.urlencoded({ extended: true}));
-
-// parse application in -> / json
-app.use(bodyParser.json());
-
-app.get('/', function(req, res) {
-
-
- //getting the name from params
- let personsName = req.params.name;
-
- //get all names and the counter for each person. 
- let namesList = greetings.getGreetedNames();
-
- //access using the keys to get the value. 
- //let count = namesList[personsName] || 0
-
-    res.render('index', {
-    greetMessage: greetings.getGreetings(),
-    personsName,
-    namesList,
-    counter : req.session.counter
-  });
-})
-
-
-
-app.post('/greet', function(req, res) {
-  
-  greetings.setGreetMessage(req.body.name, req.body.language);
-  greetings.recordGreetedNames(req.body.name);
-
-  if (!req.session.counter) {
-    req.session.counter = 0;
-  }
-  req.session.counter++;
-
-  // if (req.session.reset) {
-  //   req.session.counter = 0;
-  // }
-  res.redirect('/');
-})
-
-app.post('/reset', function(req, res) {
-
-  req.session.counter = 0;
-  res.redirect('/');
-})
-
-app.get('/greeted', function(req, res) {
-  let names = greetings.getGreetedNames()
-  res.render('greeted', {
-    names
-  })
-})
-
-//to get the name you will get it from from your dynamic route 
-app.get("/greeted/:name", function(req, res) {
-
-  //getting the name from params
-  let personsName = req.params.name
-  //get all names and the counter for each person. 
-  let namesList = greetings.getGreetedNames()
-  //access using the keys to get the value. 
-  let personsCounter = namesList[personsName] 
-
-  //then  you can  render personsCounter and the personsName.
-  res.render('counter', {
-    personsCounter,
-    personsName
-  })
-})
+// routes instances
+app.get('/', greetingRoutes.index);
+app.post('/greet', greetingRoutes.greet);
+app.post('/reset', greetingRoutes.reset);
+app.get('/greeted', greetingRoutes.greeted);
+app.get('/greeted/:name', greetingRoutes.greetedName);
 
 const PORT = process.env.PORT || 3011;
-
-app.listen(PORT, function() {
-  console.log("App started at PORT: ", PORT)
-})
+app.listen(PORT, function () {
+    console.log('App started at PORT: ', PORT);
+});

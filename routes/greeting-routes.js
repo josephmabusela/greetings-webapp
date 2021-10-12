@@ -1,105 +1,70 @@
-/***
- * A very basic CRUD example using PostgreSQL
- */
+/* eslint-disable prefer-const */
+module.exports = function GreetingRoutes (greetings) {
+    function index (req, res) {
+        const name = req.params.name;
+        const namesList = greetings.getGreetedNames();
 
- module.exports = function CategoryRoutes(categoryService) {
-	
-	async function show(req, res, next) {
-		try {
-			let categories = await categoryService.all();
-			res.render('categories/home', {
-				no_products: categories === 0,
-				categories,
-			});
-		}
-		catch (err) {
-			next(err);
-		}
-	};
+        res.render('index', {
+            greetMessage: greetings.getGreetings(),
+            name,
+            namesList,
+            counter: req.session.counter
+        });
+    }
 
-	function showAdd(req, res, next) {
-		res.render('categories/add');
-	}
+    function greet (req, res) {
+        // eslint-disable-next-line prefer-const
+        let name = greetings.getGreetings().name;
+        let language = greetings.getGreetings().language;
 
-	async function add(req, res, next) {
-		const {description} = req.body;
-		try {
-			
-			if (!description) {
-				req.flash('error', 'Category is empty!');
-				return res.redirect('/categories/add');
-			}
+        if (name === undefined) {
+            req.flash('error', 'Please enter a name');
+        } else if (language === undefined) {
+            req.flash('error', 'Please select a greet language');
+        } else if (name === undefined && language === undefined) {
+            req.flash('error', 'Please enter a name and select a greet language');
+        } else {
+            req.flash('success', 'Name registered');
+            greetings.setGreetMessage(req.body.name, req.body.language);
+            greetings.recordGreetedNames(req.body.name);
+        }
 
-			await categoryService.add(description);
-			req.flash('info', 'Category added!');
-			res.redirect('/categories');
-		}
-		catch (err) {
+        if (!req.session.counter) {
+            req.session.counter = 0;
+        } else {
+            req.session.counter++;
+        }
+        res.redirect('/');
+    }
 
-			if (err.stack.includes("duplicate key")){
-				req.flash('error', 'Category already exists : ' + description);
-				return res.redirect('/categories/add');
-			}
+    function reset (req, res) {
+        req.session.counter = 0;
+        res.redirect('/');
+    }
 
-			next(err)
-		}
-	};
+    function greeted (req, res) {
+        const names = greetings.getGreetedNames();
+        res.render('greeted', {
+            names
+        });
+    }
 
-	async function get(req, res, next) {
-		try {
-			var id = req.params.id;
-			let result = await categoryService.get(id); // pool.query('SELECT * FROM categories WHERE id = $1', [id]);
-			res.render('categories/edit', {
-				page_title: "Edit Customers - Node.js",
-				data: result
-			});
-		}
-		catch (err) {
-			next(err);
-		}
-	};
+    function greetedName (req, res) {
+        const personsName = req.params.name;
+        const namesList = greetings.getGreetedNames();
+        const personsCounter = namesList[personsName];
 
-	async function update(req, res, next) {
+        res.render('counter', {
+            personsCounter,
+            personsName
+        });
+    }
 
-		try {
-
-			console.log(JSON.stringify(req.headers));
-
-			let data = req.body;
-			let id = req.params.id;
-			let description = req.body.description;
-
-			await categoryService.update({
-				id,
-				description
-			})
-			req.flash('info', 'Category updated!');
-			res.redirect('/categories');
-		}
-		catch (err) {
-			next(err);
-		}
-
-	};
-
-	async function deleteOne(req, res, next) {
-		var id = req.params.id;
-		try{
-			await categoryService.delete(id);
-			req.flash('info', 'Category deleted!');
-			res.redirect('/categories');
-		}
-		catch(err){
-			next(err);
-		}
-	};
-
-	return {
-		add,
-		delete: deleteOne,
-		update,
-		get,
-		showAdd,
-		show
-	}
-}
+    return {
+        index,
+        greet,
+        reset,
+        greeted,
+        greetedName
+    };
+};

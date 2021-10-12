@@ -1,11 +1,12 @@
 <div class="greeting">
         <h1>Greetings!</h1>
     </div>
-    {{#if error.errorText}}
     <div class="error">
-        <h1> {{error.errorText}}</h1>
+        <h4> {{messages.error}}</h4>
     </div>
-    {{/if}}
+    <div class="success">
+        <h4> {{messages.success}}</h4>
+    </div>
     {{!-- <div class="names-greeted">
         <h2><a href="/greeted">Names greeted</a></h2>
     </div>
