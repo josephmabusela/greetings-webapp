@@ -1,12 +1,15 @@
+/* eslint-disable no-unused-vars */
 /* eslint-disable prefer-const */
-module.exports = function GreetingRoutes (greetings) {
+module.exports = function GreetingRoutes (greeting) {
     function index (req, res) {
-        const name = req.params.name;
-        const namesList = greetings.getGreetedNames();
+        let name = req.params.name;
+        let language = req.body.language;
+        let namesList = greeting.getGreetedNames();
 
         res.render('index', {
-            greetMessage: greetings.getGreetings(),
+            greetMessage: greeting.getGreetings(),
             name,
+            language,
             namesList,
             counter: req.session.counter
         });
@@ -14,26 +17,23 @@ module.exports = function GreetingRoutes (greetings) {
 
     function greet (req, res) {
         // eslint-disable-next-line prefer-const
-        let name = greetings.getGreetings().name;
-        let language = greetings.getGreetings().language;
+        let name = req.params.name;
+        let language = req.body.language;
+        let counter = req.session.counter;
 
-        if (name === undefined) {
+        if (name === '' && language !== undefined) {
             req.flash('error', 'Please enter a name');
-        } else if (language === undefined) {
-            req.flash('error', 'Please select a greet language');
+        } else if (name !== '' && language === undefined) {
+            req.flash('error', 'Please select a language');
         } else if (name === undefined && language === undefined) {
-            req.flash('error', 'Please enter a name and select a greet language');
+            req.flash('error', 'Please enter a name and select a language');
         } else {
+            greeting.setGreetMessage(req.body.name, req.body.language);
+            greeting.recordGreetedNames(req.body.name);
             req.flash('success', 'Name registered');
-            greetings.setGreetMessage(req.body.name, req.body.language);
-            greetings.recordGreetedNames(req.body.name);
+            counter++;
         }
 
-        if (!req.session.counter) {
-            req.session.counter = 0;
-        } else {
-            req.session.counter++;
-        }
         res.redirect('/');
     }
 
@@ -43,20 +43,28 @@ module.exports = function GreetingRoutes (greetings) {
     }
 
     function greeted (req, res) {
-        const names = greetings.getGreetedNames();
+        let names = greeting.getGreetedNames();
+
+        if (!req.session.counter) {
+            req.session.counter = 0;
+        } else {
+            req.session.counter++;
+        }
         res.render('greeted', {
-            names
+            names,
+            counter: req.session.counter
         });
     }
 
     function greetedName (req, res) {
-        const personsName = req.params.name;
-        const namesList = greetings.getGreetedNames();
-        const personsCounter = namesList[personsName];
+        let personsName = req.params.name;
+        let namesList = greeting.getGreetedNames();
+        let personsCounter = namesList[personsName];
 
         res.render('counter', {
             personsCounter,
-            personsName
+            personsName,
+            namesList
         });
     }
 

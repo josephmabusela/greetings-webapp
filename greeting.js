@@ -1,16 +1,18 @@
 module.exports = function Greetings () {
     let greetMessage = '';
     // let errorText = ""
-    const namesList = {};
+    // eslint-disable-next-line prefer-const
+    let namesList = {};
     // let count = 0;
 
     function setGreetMessage (name, language) {
+        name = name.toString();
         if (language === 'french') {
             greetMessage = 'Bonjour ' + name[0].toUpperCase() + name.slice(1).toLowerCase();
         }
 
         if (language === 'english') {
-            greetMessage = 'Hello ' + name[0].toUpperCase() + name.slice(1).toLowerCase();
+            greetMessage = 'Hello ' + name[0].toString()[0].toUpperCase() + name.slice(1).toLowerCase();
         }
 
         if (language === 'sepedi') {

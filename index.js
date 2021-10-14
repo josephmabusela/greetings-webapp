@@ -41,8 +41,7 @@ app.use(express.static('public'));
 app.use(session({
     secret: 'This is my secret sessions string',
     resave: false,
-    saveUninitialized: true,
-    cookie: { maxAge: 60000 }
+    saveUninitialized: true
 }));
 
 // routes instances
