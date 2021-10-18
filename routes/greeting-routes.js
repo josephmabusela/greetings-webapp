@@ -1,7 +1,19 @@
 /* eslint-disable no-unused-vars */
 /* eslint-disable prefer-const */
+const { Pool } = require('pg');
+
+const Greeting = require('../greeting');
+const pool = new Pool({
+    connectionString: process.env.DATABASE_URL,
+    ssl: {
+        rejectUnauthorized: false
+    }
+});
+
+const greeted = Greeting(pool);
+
 module.exports = function GreetingRoutes (greeting) {
-    function index (req, res) {
+    function index (req, res, next) {
         let name = req.params.name;
         let language = req.body.language;
         let namesList = greeting.getGreetedNames();
@@ -23,11 +35,16 @@ module.exports = function GreetingRoutes (greeting) {
 
         if (name === '' && language !== undefined) {
             req.flash('error', 'Please enter a name');
-        } else if (name !== '' && language === undefined) {
-            req.flash('error', 'Please select a language');
-        } else if (name === undefined && language === undefined) {
-            req.flash('error', 'Please enter a name and select a language');
+            res.redirect('/');
         } else {
+            if (name !== '' && language === undefined) {
+                req.flash('error', 'Please select a language');
+                res.redirect('/');
+            }
+            if (name === undefined && language === undefined) {
+                req.flash('error', 'Please enter a name and select a language');
+                res.redirect('/');
+            }
             greeting.setGreetMessage(req.body.name, req.body.language);
             greeting.recordGreetedNames(req.body.name);
             req.flash('success', 'Name registered');

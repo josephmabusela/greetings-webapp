@@ -5,8 +5,7 @@ const exphbs = require('express-handlebars');
 const bodyParser = require('body-parser');
 const session = require('express-session');
 const flash = require('express-flash');
-const pg = require('pg');
-const Pool = pg.Pool;
+const { Pool } = require('pg');
 
 let useSSL = false;
 let local = process.env.LOCAL || false;
@@ -16,10 +15,13 @@ if (process.env.DATABASE_URL && !local) {
 // which db connection to use
 const connectionString = process.env.DATABASE_URL || 'postgresql://localhost:5432/greetings-app';
 
+// set up pool connection to database
 const pool = new Pool({
-    connectionString,
-    ssl: useSSL
-}); ;
+    connectionString: process.env.DATABASE_URL,
+    ssl: {
+        rejectUnauthorized: false
+    }
+});
 
 const app = express();
 const Greetings = require('./greeting');
