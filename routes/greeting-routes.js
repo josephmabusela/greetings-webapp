@@ -1,6 +1,13 @@
 /* eslint-disable no-unused-vars */
 /* eslint-disable prefer-const */
-const { Pool } = require('pg');
+const { Pool, Client } = require('pg');
+
+// set up client connection to database
+const client = new Client({
+    user: 'postgres',
+    password: 'Seleka11',
+    database: 'peopledb'
+});
 
 const Greeting = require('../greeting');
 const pool = new Pool({
@@ -13,7 +20,7 @@ const pool = new Pool({
 const greeted = Greeting(pool);
 
 module.exports = function GreetingRoutes (greeting) {
-    function index (req, res, next) {
+    async function index (req, res, next) {
         let name = req.params.name;
         let language = req.body.language;
         let namesList = greeting.getGreetedNames();
@@ -27,17 +34,17 @@ module.exports = function GreetingRoutes (greeting) {
         });
     }
 
-    function greet (req, res) {
+    async function greet (req, res) {
         // eslint-disable-next-line prefer-const
         let name = req.params.name;
         let language = req.body.language;
         let counter = req.session.counter;
 
-        if (name === '' && language !== undefined) {
+        if (name === undefined && language !== undefined) {
             req.flash('error', 'Please enter a name');
             res.redirect('/');
         } else {
-            if (name !== '' && language === undefined) {
+            if (name !== undefined && language === undefined) {
                 req.flash('error', 'Please select a language');
                 res.redirect('/');
             }
@@ -51,15 +58,15 @@ module.exports = function GreetingRoutes (greeting) {
             counter++;
         }
 
-        res.redirect('/');
+        await res.redirect('/');
     }
 
-    function reset (req, res) {
+    async function reset (req, res) {
         req.session.counter = 0;
         res.redirect('/');
     }
 
-    function greeted (req, res) {
+    async function greeted (req, res) {
         let names = greeting.getGreetedNames();
 
         if (!req.session.counter) {
@@ -73,7 +80,7 @@ module.exports = function GreetingRoutes (greeting) {
         });
     }
 
-    function greetedName (req, res) {
+    async function greetedName (req, res) {
         let personsName = req.params.name;
         let namesList = greeting.getGreetedNames();
         let personsCounter = namesList[personsName];

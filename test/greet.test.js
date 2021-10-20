@@ -1,7 +1,7 @@
 /* eslint-disable prefer-const */
 /* eslint-disable no-undef */
 const assert = require('assert');
-const GreetingRoutes = require('./routes/greeting-routes');
+const GreetingRoutes = require('../routes/greeting-routes');
 const pg = require('pg');
 const Pool = pg.Pool;
 

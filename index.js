@@ -5,23 +5,37 @@ const exphbs = require('express-handlebars');
 const bodyParser = require('body-parser');
 const session = require('express-session');
 const flash = require('express-flash');
-const { Pool } = require('pg');
+const { Client, Pool } = require('pg');
 
-let useSSL = false;
-let local = process.env.LOCAL || false;
-if (process.env.DATABASE_URL && !local) {
-    useSSL = true;
-}
+// set up client connection to database
+const client = new Client({
+    user: 'postgres',
+    password: 'Seleka11',
+    database: 'peopledb'
+});
+
+client.connect()
+    .then(() => console.log('Connected successfully'))
+    .then(() => client.query('SELECT * FROM greeted'))
+    .then(results => console.table(results.rows))
+    .catch(e => console.log(e))
+    .finally(() => client.end());
+
+// let useSSL = false;
+// let local = process.env.LOCAL || false;
+// if (process.env.DATABASE_URL && !local) {
+//     useSSL = true;
+// }
 // which db connection to use
-const connectionString = process.env.DATABASE_URL || 'postgresql://localhost:5432/greetings-app';
+// const connectionString = process.env.DATABASE_URL || 'postgresql://localhost:5432/greetings-app';
 
 // set up pool connection to database
-const pool = new Pool({
-    connectionString: process.env.DATABASE_URL,
-    ssl: {
-        rejectUnauthorized: false
-    }
-});
+// const pool = new Pool({
+//     connectionString: process.env.DATABASE_URL,
+//     ssl: {
+//         rejectUnauthorized: false
+//     }
+// });
 
 const app = express();
 const Greetings = require('./greeting');
