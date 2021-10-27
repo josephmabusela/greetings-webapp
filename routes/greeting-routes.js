@@ -1,29 +1,31 @@
 /* eslint-disable no-unused-vars */
 /* eslint-disable prefer-const */
-const { Pool, Client } = require('pg');
+// /* eslint-disable no-unused-vars */
+// /* eslint-disable prefer-const */
+// const { Pool, Client } = require('pg');
 
-// set up client connection to database
-const client = new Client({
-    user: 'postgres',
-    password: 'Seleka11',
-    database: 'peopledb'
-});
+// // set up client connection to database
+// const client = new Client({
+//     user: 'postgres',
+//     password: 'Seleka11',
+//     database: 'peopledb'
+// });
 
-const Greeting = require('../greeting');
-const pool = new Pool({
-    connectionString: process.env.DATABASE_URL,
-    ssl: {
-        rejectUnauthorized: false
-    }
-});
+// const Greeting = require('../greeting');
+// const pool = new Pool({
+//     connectionString: process.env.DATABASE_URL,
+//     ssl: {
+//         rejectUnauthorized: false
+//     }
+// });
 
-const greeted = Greeting(pool);
+// const greeted = Greeting(pool);
 
 module.exports = function GreetingRoutes (greeting) {
     async function index (req, res, next) {
         let name = req.params.name;
         let language = req.body.language;
-        let namesList = greeting.getGreetedNames();
+        let namesList = await greeting.getGreetedNames();
 
         res.render('index', {
             greetMessage: greeting.getGreetings(),
@@ -36,26 +38,26 @@ module.exports = function GreetingRoutes (greeting) {
 
     async function greet (req, res) {
         // eslint-disable-next-line prefer-const
-        let name = req.params.name;
-        let language = req.body.language;
-        let counter = req.session.counter;
-
-        if (name === undefined && language !== undefined) {
-            req.flash('error', 'Please enter a name');
+        if (!req.body.language && req.body.name === '') {
+            req.flash('warning', 'Please enter name and language');
             res.redirect('/');
+            return;
+        } else if (req.body.name === '') {
+            req.flash('warning', 'Please enter name');
+            res.redirect('/');
+            return;
+        } else if (!req.body.name.match(/^[A-Za-z]+$/)) {
+            req.flash('warning', 'Please enter valid name');
+            res.redirect('/');
+            return;
+        } else if (!req.body.language) {
+            req.flash('warning', 'Please choose language');
+            res.redirect('/');
+            return;
         } else {
-            if (name !== undefined && language === undefined) {
-                req.flash('error', 'Please select a language');
-                res.redirect('/');
-            }
-            if (name === undefined && language === undefined) {
-                req.flash('error', 'Please enter a name and select a language');
-                res.redirect('/');
-            }
-            greeting.setGreetMessage(req.body.name, req.body.language);
-            greeting.recordGreetedNames(req.body.name);
-            req.flash('success', 'Name registered');
-            counter++;
+            greeting.setGreetMessage(req.body.name);
+            greeting.setGreetMessage(req.body.language);
+            greeting.getGreetings();
         }
 
         await res.redirect('/');

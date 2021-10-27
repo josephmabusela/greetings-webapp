@@ -5,21 +5,38 @@ const exphbs = require('express-handlebars');
 const bodyParser = require('body-parser');
 const session = require('express-session');
 const flash = require('express-flash');
-const { Client, Pool } = require('pg');
+const pg = require("pg");
+const Pool = pg.Pool;
 
-// set up client connection to database
-const client = new Client({
-    user: 'postgres',
-    password: 'Seleka11',
-    database: 'peopledb'
-});
+// should we use a SSL connection
+let useSSL = false;
+let local = process.env.LOCAL || false;
+if (process.env.DATABASE_URL && !local){
+    useSSL = true;
+}
+// which db connection to use
+const connectionString = process.env.DATABASE_URL || 'postgresql://josephmabusela:Seleka11@localhost:5433/my_greetings';
 
-client.connect()
-    .then(() => console.log('Connected successfully'))
-    .then(() => client.query('SELECT * FROM greeted'))
-    .then(results => console.table(results.rows))
-    .catch(e => console.log(e))
-    .finally(() => client.end());
+const pool = new Pool({
+    connectionString,
+    ssl : useSSL
+  });
+
+// const { Client, Pool } = require('pg');
+
+// // set up client connection to database
+// const client = new Client({
+//     user: 'postgres',
+//     password: 'Seleka11',
+//     database: 'peopledb'
+// });
+
+// client.connect()
+//     .then(() => console.log('Connected successfully'))
+//     .then(() => client.query('SELECT * FROM greeted'))
+//     .then(results => console.table(results.rows))
+//     .catch(e => console.log(e))
+//     .finally(() => client.end());
 
 // let useSSL = false;
 // let local = process.env.LOCAL || false;
@@ -40,7 +57,7 @@ client.connect()
 const app = express();
 const Greetings = require('./greeting');
 const GreetingRoutes = require('./routes/greeting-routes');
-const greetings = Greetings();
+const greetings = Greetings(pool);
 const greetingRoutes = GreetingRoutes(greetings);
 
 app.engine('handlebars', exphbs());
