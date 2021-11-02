@@ -21,14 +21,18 @@
 
 // const greeted = Greeting(pool);
 
+// eslint-disable-next-line no-undef
+const pg = require('pg');
+const { Pool } = pg.Pool;
+
 module.exports = function GreetingRoutes (greeting) {
-    async function index (req, res, next) {
+    async function index (req, res) {
         let name = req.params.name;
         let language = req.body.language;
         let namesList = await greeting.getGreetedNames();
 
         res.render('index', {
-            greetMessage: greeting.getGreetings(),
+            greetMessage: await greeting.getGreetings(),
             name,
             language,
             namesList,
@@ -36,31 +40,29 @@ module.exports = function GreetingRoutes (greeting) {
         });
     }
 
-    async function greet (req, res) {
+    function greet (req, res) {
         // eslint-disable-next-line prefer-const
-        if (!req.body.language && req.body.name === '') {
-            req.flash('warning', 'Please enter name and language');
-            res.redirect('/');
-            return;
-        } else if (req.body.name === '') {
-            req.flash('warning', 'Please enter name');
-            res.redirect('/');
-            return;
-        } else if (!req.body.name.match(/^[A-Za-z]+$/)) {
-            req.flash('warning', 'Please enter valid name');
-            res.redirect('/');
-            return;
-        } else if (!req.body.language) {
-            req.flash('warning', 'Please choose language');
-            res.redirect('/');
-            return;
+        let name = req.params.name;
+        let language = req.body.language;
+        let counter = req.session.counter;
+
+        if (name === undefined && language !== undefined) {
+            req.flash('error', 'Please enter a name');
         } else {
-            greeting.setGreetMessage(req.body.name);
-            greeting.setGreetMessage(req.body.language);
-            greeting.getGreetings();
+            if (name !== undefined && language === undefined) {
+                req.flash('error', 'Please select a language');
+            }
+            if (name === undefined && language === undefined) {
+                req.flash('error', 'Please enter a name and select a language');
+                res.redirect('/');
+            }
+            greeting.setGreetMessage(req.body.name, req.body.language);
+            greeting.recordGreetedNames(req.body.name);
+            req.flash('success', 'Name registered');
+            counter++;
         }
 
-        await res.redirect('/');
+        res.redirect('/');
     }
 
     async function reset (req, res) {
