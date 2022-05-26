@@ -1,0 +1,35 @@
+<div class="container">
+  <div class="form-container">
+    <h1>Greetings in different languages</h1>
+    <form action="/greet" method="post">
+      <div class="form-group">
+        <label for="nameToBeGreeted">Name Input</label>
+        <input
+          type="text"
+          name="nameInput"
+          class="nameInput"
+          placeholder="Enter a name"
+          value="{{username}}"
+        />
+      </div>
+      <div class="languages">
+        <h2>Languages</h2>
+        <p>Select a language to be greeted in below</p>
+        <label for="englishLanguage">English</label>
+        <input type="radio" name="greetLanguage" value="english">
+        <label for="frenchLanguage">French</label>
+        <input type="radio" name="greetLanguage" value="french">
+        <label for="sepediLanguage">Sepedi</label>
+        <input type="radio" name="greetLanguage" value="sepedi">
+      </div>
+      <button class="greet" type="submit">Greet</button>
+      <button class="reset" type="delete">Reset</button>
+    </form>
+    <div class="messageText">
+      <p>{{greetMessage}}</p>
+    </div>
+    <div class="counter">
+      <a href="/greeted"><h2>Names Greeted:{{counter}}</h2></a>
+   </div>
+  </div>
+</div>

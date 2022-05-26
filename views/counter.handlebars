@@ -1,9 +1,17 @@
-<div>
-    <p>Hello! {{personsName}} has been greeted {{personsCounter}} time(s)</p>
-</div>
-<div>
-    <a href="/">Home Page</a>
-</div>
-<div>
-    <a href="/greeted">Greeted Names Page</a>
+<div class="row">
+    <h1>Greeted Names Counter</h1>
+    <table>
+        <tr>
+            <th>Name</th>
+            <th>Language</th>
+            <th>Number Of Times Greeted</th>
+        </tr>
+        {{#each name}}
+        <tr>
+            <td></td>
+            <td></td>
+            <td></td>
+        </tr>
+        {{/each}}
+    </table>
 </div>

@@ -1,0 +1,117 @@
+.container {
+    /* align-items: center;
+    text-align: center; */
+    background-color: #ccc;
+    display: grid;
+    place-items: center;
+    overflow: hidden;
+    min-height: 100vh;
+
+}
+
+.form-container {
+    display: flex;
+    box-shadow: 0 0 0.5rem;
+    min-height: 80vh;
+    border-radius: 1rem;
+    overflow: hidden;
+    flex-direction: column;
+    align-items: center;
+}
+
+form {
+    flex-basis: 40%;
+    width: 100%;
+    text-align: center;
+    padding: 1rem;
+}
+
+h1 {
+    color: olivedrab;
+}
+
+.form-group {
+    align-items: center;
+    width: 80%;
+    height: 40px;
+}
+
+.form-group input {
+    width: 80%;
+    height: 100%;
+    background-color: transparent;
+    border: none;
+    font-size: 1rem;
+}
+
+.form-group label {
+    /* position: absolute; */
+    left: 10px;
+}
+
+.form-group-radio {
+    margin: 2rem 0;
+    text-align: left;
+}
+
+.form-group-radio p{
+    margin: 2rem 0 1rem;
+}
+
+
+.laguages {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 2em;
+}
+
+.greetButton {
+    margin-top: 2em;
+}
+
+.reset {
+    margin-top: 2em;
+}
+
+.messageText {
+    display: flex;
+    align-items: center;
+    padding: 2em;
+}
+
+.names-greeted {
+    display: flex;
+    align-items: center;
+    padding: 2em;
+}
+
+
+/* .form-group-radio label{
+    margin: 2rem;
+    text-align: center;
+    display: flex;
+    width: 40px;
+    height: 40px;
+    margin-right: 1rem;
+    background-color: black;
+    color: blanchedalmond;
+    border-radius: 100vw;
+    font-weight: 600;
+    position: relative;
+    cursor: pointer;
+    overflow: hidden;
+} */
+
+/* Media Queries */
+@media (max-width: 800px) {
+    .container {
+      margin: 10px 0;
+    }
+  
+    .form-container {
+      flex-direction: column;
+      align-items: stretch;
+    }
+  }
+

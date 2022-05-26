@@ -2,10 +2,7 @@
     <h1>Greeted Names</h1>
     <ul>
         {{#each names}}
-        <li><a href="/greeted/{{name}}">{{name}}</a></li>
+        <a href="/greeted/{{@key}}">{{@key}}</a>
         {{/each}}
     </ul>
-    <div>
-        <a href="/">Home Page</a>
-    </div>
 </div>

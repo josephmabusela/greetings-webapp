@@ -1,36 +1,53 @@
-/* eslint-disable prefer-const */
-/* eslint-disable no-undef */
 const assert = require('assert');
-const Greeting = require('../greeting');
-const pg = require('pg');
-const Pool = pg.Pool;
+const Greetings = require('../greet');
 
-// we are using a special test database for the tests
-// const connectionString = process.env.DATABASE_URL || 'postgresql://localhost:5432/greetings-app';
+describe('Language selector', function() {
 
-const pool = new Pool({
-    user: 'postgres',
-    host: 'localhost',
-    password: 'Seleka11',
-    port: 5432
-});
+    it('should return English as a language', function() {
+        let greetLanguage = Greetings();
+        greetLanguage.setGreetLanguage('english');
 
-// eslint-disable-next-line no-unused-vars
-let greeting = Greeting(pool);
-
-describe('Greetings database web app', function () {
-    beforeEach(async function () {
-        // clean the tables before each test run
-        await pool.query('delete from names;');
+        assert.equal('english', greetLanguage.getGreetLanguage())
     });
 
-    it('should be able to reset the database', async () => {
-        await namesGreeted.setName('Kopano');
-        greeting.reset();
-        assert.equal(0, await greeting.getGreetedNames());
+    it('should return French as a language', function() {
+        let greetLanguage = Greetings();
+        greetLanguage.setGreetLanguage('french');
+
+        assert.equal('french', greetLanguage.getGreetLanguage())
     });
 
-    after(function () {
-        pool.end();
+    it('should return Sepedi as a language', function() {
+        let greetLanguage = Greetings();
+        greetLanguage.setGreetLanguage('sepedi');
+
+        assert.equal('sepedi', greetLanguage.getGreetLanguage())
     });
-});
+})
+
+describe('Greeting message', function() {
+
+    it('should return Hello for an English greeting', function() {
+        let greetingMessage = Greetings();
+        greetingMessage.setGreetLanguage('english');
+        greetingMessage.setGreetMessage('Kopano');
+
+        assert.equal('Hello ' + 'Kopano', greetingMessage.getGreetingMessage('Hello ' + 'Kopano'))
+    });
+
+    it('should return Hello for an French greeting', function() {
+        let greetingMessage = Greetings();
+        greetingMessage.setGreetLanguage('french');
+        greetingMessage.setGreetMessage('Kopano');
+
+        assert.equal('Bonjour ' + 'Kopano', greetingMessage.getGreetingMessage('Bonjour ' + 'Kopano'))
+    });
+
+    it('should return Hello for an Sepedi greeting', function() {
+        let greetingMessage = Greetings();
+        greetingMessage.setGreetLanguage('sepedi');
+        greetingMessage.setGreetMessage('Kopano');
+
+        assert.equal('Dumela ' + 'Kopano', greetingMessage.getGreetingMessage('Dumela ' + 'Kopano'))
+    });
+})
